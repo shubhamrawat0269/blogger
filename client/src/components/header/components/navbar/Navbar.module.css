@@ -1,5 +1,5 @@
 .navbarWrapper {
-    @apply border-b-2 px-5 lg:px-0
+    @apply border-b-2 md:px-10
 }
 
 .logo {
@@ -9,6 +9,7 @@
 .textInputBox {
     @apply hidden lg:inline
 }
+
 
 .searchBtn {
     @apply w-12 h-10 lg:hidden
