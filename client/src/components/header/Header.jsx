@@ -1,10 +1,10 @@
 import { Outlet } from "react-router-dom";
-import { Button } from "flowbite-react";
+import NavbarWrapper from "./components/navbar/Navbar";
+
 const Header = () => {
   return (
     <div>
-      <h2>Header</h2>
-      <Button>Click me</Button>
+      <NavbarWrapper />
       <Outlet />
     </div>
   );
