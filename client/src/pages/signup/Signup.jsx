@@ -1,7 +1,9 @@
+import axios from "axios";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
 import styles from "./Signup.module.css";
-import { Button, Checkbox, Label, TextInput } from "flowbite-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Button, Label, TextInput } from "flowbite-react";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +11,9 @@ const Signup = () => {
     email: "",
     password: "",
   });
+
+  const [loader, setLoader] = useState(false);
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -19,8 +24,36 @@ const Signup = () => {
     });
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
+
+    if (!formData.username || !formData.email || !formData.password) {
+      toast.error("Fill out all form field");
+      return;
+    }
+
+    // Api Call
+    const API_URL = `${import.meta.env.VITE_BACKEND_URL}/api/auth/sign-up`;
+    try {
+      setLoader(true);
+      const res = await axios.post(API_URL, formData);
+      console.log(res);
+
+      if (res.data.success) {
+        setLoader(false);
+        toast.success(res.data.message);
+        navigate("/sign-in");
+      }
+    } catch (error) {
+      // console.log(error);
+      setLoader(false);
+      toast.error(error.response.data.message);
+      setUserSignupData({
+        username: "",
+        email: "",
+        password: "",
+      });
+    }
   };
   return (
     <div className={styles.signupContainer}>
@@ -40,7 +73,6 @@ const Signup = () => {
             value={formData.username}
             onChange={handleInputChange}
             placeholder="Type Username"
-            required
           />
           <div className="mb-2 block">
             <Label
@@ -55,7 +87,6 @@ const Signup = () => {
             value={formData.email}
             onChange={handleInputChange}
             placeholder="Type Email"
-            required
           />
         </div>
         <div>
@@ -72,15 +103,16 @@ const Signup = () => {
             value={formData.password}
             onChange={handleInputChange}
             placeholder="Type Password"
-            required
           />
         </div>
         <Button type="submit" className={styles.submitBtn}>
-          Submit
+          {loader ? "Loading..." : "Submit"}
         </Button>
         <div className={styles.checkboxItem}>
           Have an account?
-          <Link to={"/sign-in"}>Sign in</Link>
+          <Link to={"/sign-in"} className="text-teal-100 font-semibold">
+            Sign in
+          </Link>
         </div>
       </form>
     </div>
