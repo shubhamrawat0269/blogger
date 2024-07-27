@@ -3,7 +3,9 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import styles from "./Signin.module.css";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { Button, Label, TextInput } from "flowbite-react";
+import { handleSignin } from "../../store/slices/userSlice";
 
 const Signin = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +15,7 @@ const Signin = () => {
 
   const [loader, setLoader] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -41,6 +44,7 @@ const Signin = () => {
 
       if (res.data.success) {
         setLoader(false);
+        dispatch(handleSignin(res.data));
         toast.success(res.data.message);
         navigate("/");
       }
