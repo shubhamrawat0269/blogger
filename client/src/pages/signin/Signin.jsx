@@ -19,7 +19,7 @@ const Signin = () => {
 
     setFormData({
       ...formData,
-      [id]: value,
+      [id]: value.trim(),
     });
   };
 
@@ -33,27 +33,26 @@ const Signin = () => {
 
     // Api Call
 
-    // const API_URL = `${import.meta.env.VITE_BACKEND_URL}/api/auth/sign-in`;
-    // try {
-    //   setLoader(true);
-    //   const res = await axios.post(API_URL, formData);
-    //   console.log(res);
+    const API_URL = `${import.meta.env.VITE_BACKEND_URL}/api/auth/sign-in`;
+    try {
+      setLoader(true);
+      const res = await axios.post(API_URL, formData);
+      // console.log(res);
 
-    //   if (res.data.success) {
-    //     setLoader(false);
-    //     toast.success(res.data.message);
-    //     navigate("/sign-in");
-    //   }
-    // } catch (error) {
-    //   // console.log(error);
-    //   setLoader(false);
-    //   toast.error(error.response.data.message);
-    //   setUserSignupData({
-    //     username: "",
-    //     email: "",
-    //     password: "",
-    //   });
-    // }
+      if (res.data.success) {
+        setLoader(false);
+        toast.success(res.data.message);
+        navigate("/");
+      }
+    } catch (error) {
+      // console.log(error);
+      setLoader(false);
+      toast.error(error.response.data.message);
+      setUserSignupData({
+        email: "",
+        password: "",
+      });
+    }
   };
 
   return (

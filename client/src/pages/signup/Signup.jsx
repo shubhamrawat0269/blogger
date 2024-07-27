@@ -20,7 +20,7 @@ const Signup = () => {
 
     setFormData({
       ...formData,
-      [id]: value,
+      [id]: value.trim(),
     });
   };
 
